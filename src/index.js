@@ -1,7 +1,8 @@
 import $ from 'jquery';
 import React from "react";
 import ReactDOM from "react-dom";
-import LoadingScreen from './loading/LoadingScreen';
+import LoadingScreen from './notices/LoadingScreen';
+import ErrorScreen from './notices/ErrorScreen';
 
 //Sass
 import './sass/main.sass';
@@ -19,7 +20,7 @@ class App extends React.Component
 	
 	render()
 	{
-		return <LoadingScreen displayID={2} />
+		return <ErrorScreen title="Initialisation error" subtitle="No display ID found" displayID={2} />
 	}
 }
 

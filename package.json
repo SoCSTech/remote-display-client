@@ -47,6 +47,7 @@
     "lodash": "^4.17.15",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-icons": "^4.3.1",
     "sass": "^1.32.5",
     "sass-loader": "^10.1.1"
   }
