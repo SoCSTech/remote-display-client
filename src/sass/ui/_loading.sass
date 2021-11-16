@@ -1,0 +1,51 @@
+$spinner-size: 100px
+$spinner-thickness: 5px
+
+@keyframes spinner
+    0%
+        transform: rotate(0deg)
+
+    99%
+        transform: rotate(359deg)
+
+.loading-screen
+    display: flex
+    justify-content: center
+    align-items: center
+    height: 100%
+    width: 100%
+
+    .content
+        width: 50%
+        display: flex
+        align-items: center
+
+        .left.spinner
+            background-color: transparent
+            border: $spinner-thickness solid transparent
+            border-top-color: rgba($selected-color, 0.2)
+            width: $spinner-size
+            height: $spinner-size
+            border-radius: 50%
+            margin-right: 5rem
+            animation: 0.35s linear infinite spinner
+
+
+        h1
+            font-size: 48pt
+
+        h2 
+            font-weight: normal
+            margin-top: 1.5rem
+
+    .display-id
+        position: absolute
+        top: 0
+        right: 0
+        text-align: right
+        font-size: 48pt
+        font-weight: bold
+        color: $fg-color-light
+        padding: 2rem 3rem
+
+    // .content

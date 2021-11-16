@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import React from "react";
 import ReactDOM from "react-dom";
+import LoadingScreen from './loading/LoadingScreen';
 
 //Sass
 import './sass/main.sass';
@@ -11,13 +12,14 @@ class App extends React.Component
 	constructor(props)
 	{
 		super(props);
+
+		//Set display id to null initially
+		this.displayID = null;
 	}
 	
 	render()
 	{
-		return(
-			<h1>Hey, it works!</h1>
-		);
+		return <LoadingScreen displayID={2} />
 	}
 }
 
