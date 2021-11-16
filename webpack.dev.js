@@ -7,8 +7,11 @@ module.exports = merge(common, {
 	devServer: {
 		contentBase: __dirname + "/dist/",
 		open: true,
-		inline: true
+		inline: true,
+		historyApiFallback: {
+			index: '/'
+		}
 	},
-	
+
 	devtool: "eval-source-map"
 });
