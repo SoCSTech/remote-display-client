@@ -1,7 +1,7 @@
 import React from "react";
+import { withRouter } from "react-router";
 
-
-export default class LoadingScreen extends React.Component
+class LoadingScreen extends React.Component
 {
     constructor(props)
     {
@@ -10,6 +10,10 @@ export default class LoadingScreen extends React.Component
 
     render()
     {
+        //Get params
+        const params = this.props.match.params;
+        const displayID = params.displayID
+        
         return <div className="loading screen">
             <div className="content">
                 <div className="left spinner">
@@ -21,8 +25,10 @@ export default class LoadingScreen extends React.Component
                 </div>
             </div>
             <div className="display-id">
-                {this.props.displayID}
+                {displayID}
             </div>
         </div>;
     }
 }
+
+export default withRouter(LoadingScreen);

@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Router, Routes, Link, Switch, Route, BrowserRouter, useParams } from 'react-router-dom';
 
 //User components
 import LoadingScreen from './notices/LoadingScreen';
@@ -25,14 +25,11 @@ class App extends React.Component
 	{
 		return <BrowserRouter>
 			<Switch>
-				<Route path="/all">
-					<LoadingScreen />
-				</Route>
-				<Route path="/:display">
+				<Route path="/:displayID">
 					<LoadingScreen />
 				</Route>
 				<Route path="/">
-					<LoadingScreen />
+					<ErrorScreen title="Initialisation error" subtitle="No display ID passed" />
 				</Route>
 			</Switch>
 		</BrowserRouter>
