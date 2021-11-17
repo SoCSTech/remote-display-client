@@ -10,6 +10,10 @@ import ErrorScreen from './notices/ErrorScreen';
 //Sass
 import './sass/main.sass';
 
+//Websocket components
+import WebsocketClient from './ws/WebsocketClient';
+
+
 
 class App extends React.Component
 {
@@ -25,6 +29,9 @@ class App extends React.Component
 		}
 
 		this.addMessage("Application initialised");
+
+		//Make ws client
+		this.wsClient = new WebsocketClient(this.addMessage.bind(this));
 	}
 
 	addMessage(msg)
