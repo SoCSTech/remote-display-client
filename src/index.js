@@ -32,6 +32,9 @@ class App extends React.Component
 
 		//Make ws client
 		this.wsClient = new WebsocketClient(this.addMessage.bind(this));
+
+		//Connect
+		this.wsClient.connect("localhost", 48895);
 	}
 
 	addMessage(msg)
