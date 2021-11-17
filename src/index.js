@@ -19,6 +19,26 @@ class App extends React.Component
 
 		//Set display id to null initially
 		this.displayID = null;
+
+		this.state = {
+			messages: [  ]
+		}
+
+		this.addMessage("Application initialised");
+	}
+
+	addMessage(msg)
+	{
+		const fmt = x => `[${new Date().toISOString()}] ${x}`
+
+		let messages = this.state.messages;
+		messages.push(fmt(msg));
+
+		if(messages.length > 10)
+			messages = messages.slice(-10, -1);
+
+		this.setState({ messages: messages });
+
 	}
 	
 	render()
@@ -26,23 +46,13 @@ class App extends React.Component
 		return <BrowserRouter>
 			<Switch>
 				<Route path="/:displayID">
-					<LoadingScreen />
+					<LoadingScreen messages={this.state.messages} />
 				</Route>
 				<Route path="/">
-					<ErrorScreen title="Initialisation error" subtitle="No display ID passed" />
+					<ErrorScreen title="Initialisation error" subtitle="No display ID passed"/>
 				</Route>
 			</Switch>
 		</BrowserRouter>
-		// return <BrowserRouter>
-		// 	<Switch>
-		// 		<Route path="/all">
-		// 			<ErrorScreen title="Initialisation error" subtitle="No display ID passed" />
-		// 		</Route>
-		// 		<Route path="/:display">
-		// 			<LoadingScreen />
-		// 		</Route>
-		// 	</Switch>
-		// </BrowserRouter>;
 	}
 }
 
