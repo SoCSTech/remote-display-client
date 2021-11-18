@@ -1,10 +1,12 @@
 import React from "react";
 import TextSlide from "./TextSlide";
+import ImageSlide from "./ImageSlide";
 
 function carouselMap(key, props)
 {
     return ({
-        text: <TextSlide {...props}/>
+        text: <TextSlide {...props}/>,
+        image: <ImageSlide {...props}/>
     })[key];
 }
 
