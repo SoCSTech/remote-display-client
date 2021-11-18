@@ -79,6 +79,8 @@ class App extends React.Component
 
 	onValidation(status)
 	{
+		this.displayID = status?.displayID;
+
 		if(status.success == true)
 		{
 			//Set state
@@ -105,7 +107,7 @@ class App extends React.Component
 	{
 		//Uh oh its BRONKT
 		if(this.state.status.code == statusCodes.BROKEN)
-			return <ErrorScreen title="Initialisation error" subtitle={this.state.status.msg} messages={this.state.messages}/>
+			return <ErrorScreen title="Initialisation error" subtitle={this.state.status.msg} messages={this.state.messages} displayID={this.displayID}/>
 
 		//Uh oh it needs validating
 

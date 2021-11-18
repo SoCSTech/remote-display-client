@@ -17,10 +17,10 @@ class LoadingScreen extends React.Component
 
         //Validate displayID
         if (!this.validateDisplayID(displayID))
-            this.props.onValidation?.({ success: false, msg: "Display ID was invalid or missing" });
+            this.props.onValidation?.({ success: false, msg: "Display ID was invalid or missing", displayID: displayID });
 
         else
-            this.props.onValidation?.({ success: true, msg: "All good bro" });
+            this.props.onValidation?.({ success: true, msg: "All good bro", displayID: displayID });
     }
 
     validateDisplayID(displayID)
@@ -43,7 +43,7 @@ class LoadingScreen extends React.Component
         const params = this.props.match.params;
         const displayID = params.displayID;
 
-        
+
         return <div className="loading screen">
             <div className="content">
                 <div className="left spinner">
