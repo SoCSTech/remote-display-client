@@ -9,6 +9,20 @@ class LoadingScreen extends React.Component
         super(props);
     }
 
+    componentDidMount()
+    {
+        //Get params
+        const params = this.props.match.params;
+        const displayID = params.displayID;
+
+        //Validate displayID
+        if (!this.validateDisplayID(displayID))
+            this.props.onValidation?.({ success: false, msg: "Display ID was invalid or missing" });
+
+        else
+            this.props.onValidation?.({ success: true, msg: "All good bro" });
+    }
+
     validateDisplayID(displayID)
     {
         //Can't parse an int? die
@@ -24,14 +38,11 @@ class LoadingScreen extends React.Component
     }
 
     render()
-    {
+    {       
         //Get params
         const params = this.props.match.params;
-        const displayID = params.displayID
+        const displayID = params.displayID;
 
-        //Validate displayID
-        if(!this.validateDisplayID(displayID))
-            return <ErrorScreen title="Initialisation error" subtitle="Invalid display ID passed" />
         
         return <div className="loading screen">
             <div className="content">

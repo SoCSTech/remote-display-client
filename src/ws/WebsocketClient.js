@@ -8,6 +8,14 @@ export default class WebsocketClient
         //Call logger func
         loggerFunc("Instantiating Websocket Client");
 
+        //Set callbacks
+        this.callbacks = {};
+    }
+
+    on(key, func)
+    {
+        //Set callback
+        this.callbacks[key] = func;
     }
 
     connect(ip, port)
@@ -39,6 +47,19 @@ export default class WebsocketClient
             }));
 
             ctx.loggerFunc("Sent handshake request");
+        }
+
+        this.socket.onerror = function(event)
+        {
+            ctx.loggerFunc(`Failed to connect to server on port ${port}`);
+        }
+
+        this.socket.onclose = function(event)
+        {
+            ctx.loggerFunc(`Socket closed on port ${port} (Code ${event.code})`);
+
+            if(Object.keys(ctx.callbacks).includes("close"))
+                ctx.callbacks["close"](event);
         }
     }
     

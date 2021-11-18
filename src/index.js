@@ -13,6 +13,12 @@ import './sass/main.sass';
 //Websocket components
 import WebsocketClient from './ws/WebsocketClient';
 
+const statusCodes = {
+	UNVALIDATED: 0x000000,
+	CONNECTING:  0x0000ff,
+	BROKEN:      0x1a00ff,
+	CONNECTED:   0x2b00ff
+}
 
 
 class App extends React.Component
@@ -25,16 +31,36 @@ class App extends React.Component
 		this.displayID = null;
 
 		this.state = {
-			messages: [  ]
+			messages: [  ],
+			status: {
+				code: statusCodes.UNVALIDATED,
+				msg: ""
+			}
 		}
 
 		this.addMessage("Application initialised");
+	}
 
+	startUpWebsocket()
+	{
 		//Make ws client
 		this.wsClient = new WebsocketClient(this.addMessage.bind(this));
 
+		//Set callbacks
+		this.wsClient.on("close", this.onSocketClosed.bind(this));
+
 		//Connect
 		this.wsClient.connect("localhost", 48895);
+	}
+
+	onSocketClosed(eventData)
+	{
+		this.setState({
+			status: {
+				code: statusCodes.BROKEN,
+				msg: "This display couldn't connect to the server. Refreshing automatically."
+			}
+		})
 	}
 
 	addMessage(msg)
@@ -50,13 +76,48 @@ class App extends React.Component
 		this.setState({ messages: messages });
 
 	}
+
+	onValidation(status)
+	{
+		if(status.success == true)
+		{
+			//Set state
+			this.setState({
+				status: {
+					code: statusCodes.CONNECTING,
+					msg: ""
+				}
+			})
+
+			//And start connecting
+			this.startUpWebsocket();
+		}
+		else
+			this.setState({
+				status: {
+					code: statusCodes.BROKEN,
+					msg: status.msg
+				}
+			})
+	}
 	
+	getDisplay()
+	{
+		//Uh oh its BRONKT
+		if(this.state.status.code == statusCodes.BROKEN)
+			return <ErrorScreen title="Initialisation error" subtitle={this.state.status.msg} messages={this.state.messages}/>
+
+		//Uh oh it needs validating
+
+		return <LoadingScreen messages={this.state.messages} onValidation={this.onValidation.bind(this)} />;
+	}
+
 	render()
 	{
 		return <BrowserRouter>
 			<Switch>
 				<Route path="/:displayID">
-					<LoadingScreen messages={this.state.messages} />
+					{this.getDisplay()}
 				</Route>
 				<Route path="/">
 					<ErrorScreen title="Initialisation error" subtitle="No display ID passed"/>

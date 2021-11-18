@@ -21,6 +21,9 @@ export default class ErrorScreen extends React.Component
             <div className="display-id">
                 {this.props.displayID}
             </div>
+            <div className="console">
+                {this.props.messages?.map((x, i) => <div key={i} className="line">{x}</div>)}
+            </div>
         </div>;
     }
 }
