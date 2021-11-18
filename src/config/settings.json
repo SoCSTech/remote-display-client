@@ -1,3 +1,4 @@
 {
-    "autoRefreshTimeSeconds": 20
+    "autoRefreshTimeSeconds": 20,
+    "authorisationToken": "password"
 }

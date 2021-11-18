@@ -1,3 +1,5 @@
+import settings from '../config/settings.json'
+
 export default class WebsocketClient
 {
     constructor(loggerFunc)
@@ -51,7 +53,7 @@ export default class WebsocketClient
             ({
                 requestType: "handshake",
                 payload: {
-                    authToken: "sausages",
+                    authToken: settings.authorisationToken,
                     displayID: 5
                 }
             }));
