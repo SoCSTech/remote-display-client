@@ -1,12 +1,14 @@
 import React from "react";
 import TextSlide from "./TextSlide";
 import ImageSlide from "./ImageSlide";
+import IFrameSlide from "./IFrameSlide";
 
 function carouselMap(key, props)
 {
     return ({
         text: <TextSlide {...props}/>,
-        image: <ImageSlide {...props}/>
+        image: <ImageSlide {...props}/>,
+        website: <IFrameSlide {...props}/>
     })[key];
 }
 
