@@ -12,13 +12,8 @@ import './sass/main.sass';
 
 //Websocket components
 import WebsocketClient from './ws/WebsocketClient';
+import statusCodes from './ws/StatusCodes';
 
-const statusCodes = {
-	UNVALIDATED: 0x000000,
-	CONNECTING:  0x0000ff,
-	BROKEN:      0x1a00ff,
-	CONNECTED:   0x2b00ff
-}
 
 
 class App extends React.Component
@@ -48,9 +43,40 @@ class App extends React.Component
 
 		//Set callbacks
 		this.wsClient.on("close", this.onSocketClosed.bind(this));
+		this.wsClient.on("open", this.onSocketOpen.bind(this));
+		this.wsClient.on("status_change", this.onSocketStatusChange.bind(this));
+		this.wsClient.on("message", this.onSocketMessage.bind(this));
 
 		//Connect
 		this.wsClient.connect("localhost", 48895);
+	}
+
+	onSocketStatusChange(data)
+	{
+		//We only care about one status
+		if(data.status != "connected")
+			return;
+
+		//Notify that the handshake is completed
+		this.addMessage("Handshake completed, connected fully to server.");
+
+		//And set status to authenticated
+		this.setState({ status: { code: statusCodes.AUTHENTICATED, msg: "authenticated" } });
+	}
+
+	onSocketMessage(data)
+	{
+
+	}
+
+	onSocketOpen(eventData)
+	{
+		this.setState({
+			status: {
+				code: statusCodes.CONNECTED,
+				msg: "ive connected bruh"
+			}
+		});
 	}
 
 	onSocketClosed(eventData)
@@ -58,7 +84,7 @@ class App extends React.Component
 		this.setState({
 			status: {
 				code: statusCodes.BROKEN,
-				msg: "This display couldn't connect to the server. Refreshing automatically."
+				msg: "This display couldn't connect to the server."
 			}
 		})
 	}
@@ -109,8 +135,11 @@ class App extends React.Component
 		if(this.state.status.code == statusCodes.BROKEN)
 			return <ErrorScreen title="Initialisation error" subtitle={this.state.status.msg} messages={this.state.messages} displayID={this.displayID}/>
 
-		//Uh oh it needs validating
+		//If authenticated
+		if (this.state.status.code == statusCodes.AUTHENTICATED)
+			return null;
 
+		//Validated, connected
 		return <LoadingScreen messages={this.state.messages} onValidation={this.onValidation.bind(this)} />;
 	}
 

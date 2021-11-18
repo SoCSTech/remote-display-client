@@ -10,12 +10,20 @@ export default class WebsocketClient
 
         //Set callbacks
         this.callbacks = {};
+
+        this.invokeCallback = this.invokeCallback.bind(this);
     }
 
     on(key, func)
     {
         //Set callback
         this.callbacks[key] = func;
+    }
+
+    invokeCallback(cb, data)
+    {
+        if (Object.keys(this.callbacks).includes(cb))
+            this.callbacks[cb](data);
     }
 
     connect(ip, port)
@@ -35,18 +43,40 @@ export default class WebsocketClient
         //Send some messages
         this.socket.onopen = function(event)
         {
+            ctx.invokeCallback("open", event);
+
             ctx.loggerFunc(`Socket connected on port ${port}`);
 
             ctx.socket.send(JSON.stringify
             ({
                 requestType: "handshake",
                 payload: {
-                    authtoken: "crackers",
+                    authToken: "sausages",
                     displayID: 5
                 }
             }));
 
             ctx.loggerFunc("Sent handshake request");
+        }
+
+        this.socket.onmessage = function(msg)
+        {
+            try
+            {
+                let msgData = JSON.parse(msg.data);
+
+                if("status" in msgData)
+                    ctx.invokeCallback("status_change", msgData);
+
+                else
+                    ctx.invokeCallback("message", msgData);
+                    
+                // ctx.loggerFunc(msgData);
+            }
+            catch(e)
+            {
+                ctx.loggerFunc("Error parsing JSON message from server");
+            }
         }
 
         this.socket.onerror = function(event)
@@ -58,8 +88,7 @@ export default class WebsocketClient
         {
             ctx.loggerFunc(`Socket closed on port ${port} (Code ${event.code})`);
 
-            if(Object.keys(ctx.callbacks).includes("close"))
-                ctx.callbacks["close"](event);
+            ctx.invokeCallback("close", event);
         }
     }
     
