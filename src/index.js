@@ -3,7 +3,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Router, Routes, Link, Switch, Route, BrowserRouter, useParams } from 'react-router-dom';
 
-//User components
+//User components & settings
+import settings from './config/settings.json'
 import LoadingScreen from './notices/LoadingScreen';
 import ErrorScreen from './notices/ErrorScreen';
 
@@ -86,24 +87,57 @@ class App extends React.Component
 		this.setState({
 			status: {
 				code: statusCodes.BROKEN,
-				msg: "This display couldn't connect to the server."
+				msg: "This display couldn't connect to the server. Refreshing soon."
 			}
-		})
+		});
+
+		//Set timer
+		if(this.refreshTimer == null)
+			this.refreshTimerUpdate();
 	}
 
-	addMessage(msg)
+	refreshTimerUpdate()
+	{
+		//Count down
+		this.timerCount = settings.autoRefreshTimeSeconds;
+
+		//Set context
+		const ctx = this;
+		const timerDecrementValue = 0.1;
+
+		this.refreshTimer = setInterval(function()
+		{
+			//Decrement timer
+			ctx.timerCount -= timerDecrementValue;
+
+			if(ctx.timerCount > 0)
+				ctx.addMessage(`Refreshing in ${ctx.timerCount.toFixed(1)} seconds...`, true);
+			else
+			{
+				ctx.addMessage(`Refreshing now!`, true);
+				window.location.reload();
+			}
+
+		}, timerDecrementValue * 1000);
+	}
+
+	addMessage(msg, removeLastMessage=false)
 	{
 		const fmt = x => `[${new Date().toISOString()}] ${x}`
 
 		let messages = this.state.messages;
-		messages.push(fmt(msg));
+
+		if(removeLastMessage)
+			messages = messages.slice(0, -1);
 
 		if(messages.length > 10)
-			messages = messages.slice(-10, -1);
+			messages = messages.slice(1);
+
+		messages.push(fmt(msg));
 
 		this.setState({ messages: messages });
-
 	}
+
 
 	onValidation(status)
 	{
