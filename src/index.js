@@ -13,6 +13,7 @@ import './sass/main.sass';
 //Websocket components
 import WebsocketClient from './ws/WebsocketClient';
 import statusCodes from './ws/StatusCodes';
+import CarouselSwitch from './carousel/CarouselSwitch';
 
 
 
@@ -30,7 +31,8 @@ class App extends React.Component
 			status: {
 				code: statusCodes.UNVALIDATED,
 				msg: ""
-			}
+			},
+			displayInfo: {}
 		}
 
 		this.addMessage("Application initialised");
@@ -66,7 +68,7 @@ class App extends React.Component
 
 	onSocketMessage(data)
 	{
-
+		this.setState({ displayInfo: data });
 	}
 
 	onSocketOpen(eventData)
@@ -137,7 +139,7 @@ class App extends React.Component
 
 		//If authenticated
 		if (this.state.status.code == statusCodes.AUTHENTICATED)
-			return null;
+			return <CarouselSwitch data={this.state.displayInfo}/>;
 
 		//Validated, connected
 		return <LoadingScreen messages={this.state.messages} onValidation={this.onValidation.bind(this)} />;
