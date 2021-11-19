@@ -10,7 +10,7 @@ void main()
 {
     vec2 res = vec2(1920, 1080);
 
-    float v = hash(gl_FragCoord.xy / res.xy + u_time);
+    float v = hash(gl_FragCoord.xy / res.xy + mod(u_time, 10.0));
 
     gl_FragColor = vec4(v, v, v, 1);
 }
