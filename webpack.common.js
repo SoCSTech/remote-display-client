@@ -62,6 +62,17 @@ module.exports = {
 				]
 			},
 			{
+				test :/\.glsl$/,
+				use: [
+					{
+						loader: "raw-loader",
+						options: {
+							esModule: false
+						}
+					}
+				]
+			},
+			{
 				test: /\.s?[ac]ss$/i,
 				use: ['style-loader', 'css-loader',
 					{

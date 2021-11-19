@@ -9,6 +9,7 @@
 @import 'ui/image-slide'
 @import 'ui/iframe-slide'
 @import 'ui/twitter-slide'
+@import 'ui/video-slide'
 
 
 body
@@ -24,3 +25,17 @@ html, body
 
 h1
     margin: 0
+
+.noise
+    top: 0
+    left: 0
+    position: absolute
+    width: 100%
+    height: 100%
+    background-color: red
+    z-index: 90
+    opacity: 0.0
+
+    canvas
+        width: 100% !important
+        height: 100% !important

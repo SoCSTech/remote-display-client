@@ -42,10 +42,12 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "@signal-noise/react-shader-canvas": "0.0.3",
     "fibers": "^5.0.0",
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
     "qrcode.react": "^1.0.1",
+    "raw-loader": "^4.0.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-icons": "^4.3.1",

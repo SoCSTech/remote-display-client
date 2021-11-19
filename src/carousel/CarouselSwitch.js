@@ -3,6 +3,8 @@ import TextSlide from "./TextSlide";
 import ImageSlide from "./ImageSlide";
 import IFrameSlide from "./IFrameSlide";
 import TwitterSlide from "./TwitterSlide";
+import VideoSlide from "./VideoSlide";
+import CarouselContainer from "./CarouselContainer";
 
 function carouselMap(key, props)
 {
@@ -10,7 +12,8 @@ function carouselMap(key, props)
         text:    <TextSlide {...props}/>,
         image:   <ImageSlide {...props}/>,
         website: <IFrameSlide {...props}/>,
-        twitter: <TwitterSlide {...props}/>
+        twitter: <TwitterSlide {...props}/>,
+        video:   <VideoSlide {...props}/>
     })[key];
 }
 
@@ -35,6 +38,8 @@ export default class CarouselSwitch extends React.Component
             data: payload
         };
         
-        return carouselMap(type, props);
+        return <CarouselContainer>
+            {carouselMap(type, props)}
+        </CarouselContainer>
     }
 }

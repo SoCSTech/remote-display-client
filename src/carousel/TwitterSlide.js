@@ -9,20 +9,13 @@ export default class TwitterSlide extends React.Component
         super(props);
     }
 
-    componentDidUpdate()
-    {
-        $(".twitter-feed").html("");
-        twttr?.widgets.load();
-    }
 
     componentDidMount()
     {
+        console.log("mount");
+
         twttr?.widgets.load()
 
-        // Twitter Overrides -----------------------------------------------------------------------------
-        $('.twitter-feed').delegate('#twitter-widget-0', 'DOMSubtreeModified propertychange', function () {
-            customizeTweetMedia();
-        });
 
         var customizeTweetMedia = function () {
             // CSS Overrides
@@ -39,10 +32,19 @@ export default class TwitterSlide extends React.Component
                 customizeTweetMedia(this);
             });
         }
+
+        // Twitter Overrides -----------------------------------------------------------------------------
+        $('.twitter-feed').delegate('#twitter-widget-0', 'DOMSubtreeModified propertychange', function () {
+            customizeTweetMedia();
+        });
+
+        customizeTweetMedia();
     }
 
     render()
     {
+        // console.log(this.props.data.url);
+
         return <div className="twitter-slide container">
             <div className="left">
                 <img src={this.props.data.avatar}/>
