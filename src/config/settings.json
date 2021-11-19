@@ -1,4 +1,8 @@
 {
     "autoRefreshTimeSeconds": 20,
-    "authorisationToken": "password"
+    "authorisationToken": "password",
+    "host": {
+        "address": "localhost",
+        "port": 48895
+    }
 }

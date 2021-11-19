@@ -51,7 +51,7 @@ class App extends React.Component
 		this.wsClient.on("message", this.onSocketMessage.bind(this));
 
 		//Connect
-		this.wsClient.connect("localhost", 48895);
+		this.wsClient.connect(settings.host.address, settings.host.port);
 	}
 
 	onSocketStatusChange(data)
